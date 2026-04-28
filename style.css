@@ -1,0 +1,683 @@
+:root {
+    --bg-color: #0d0d0d;
+    --bg-gradient: radial-gradient(circle at center, #1f1f1f 0%, #0d0d0d 80%);
+    --gold: #d4af37;
+    --gold-light: #f3e5ab;
+    --text-light: #fafafa;
+    --text-dim: #b3b3b3;
+    
+    --font-script: 'Pinyon Script', cursive;
+    --font-serif: 'Cormorant Garamond', serif;
+    --font-sans: 'Lato', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg-color);
+    background-image: var(--bg-gradient);
+    background-attachment: fixed; /* Mantiene el degradado estático al bajar */
+    color: var(--text-light);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Ocultar la main view completa inicialmente */
+#main-invitation {
+    opacity: 0;
+    visibility: hidden;
+    height: 100vh;
+    overflow: hidden;
+    transition: opacity 1.5s ease-in-out;
+}
+
+#main-invitation.visible {
+    opacity: 1;
+    visibility: visible;
+    height: auto;
+    overflow: visible; /* Allowing normal page scrolling */
+}
+
+/* ==================================
+   SITIO COMPLETO: SECCIONES
+   ================================== */
+.section-hero {
+    height: 100svh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.floral-top {
+    width: 100%;
+    height: 35vh;
+    min-height: 250px;
+    background-image: url('floral_top.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0.85;
+    z-index: 0;
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+}
+
+.global-floral-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('floral_top.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.10; /* Sutil como textura de papel tapiz */
+    z-index: 0;
+    pointer-events: none;
+    filter: grayscale(20%) brightness(0.8);
+}
+
+.floral-bottom {
+    width: 100%;
+    height: 40vh;
+    min-height: 250px;
+    background-image: url('floral_top.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    opacity: 0.7;
+    z-index: 0;
+    /* Giramos matemáticamente la flor 180° para crear el marco inferior */
+    transform: rotate(180deg);
+    mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Solo empujando si estamos en pantalla de +768, en movil lo hace el flex center */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10vh; 
+    width: 100%;
+    padding: 0 20px;
+}
+
+.quote {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem);
+    font-style: italic;
+    color: var(--text-light);
+    margin-bottom: 25px;
+    line-height: 1.4;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9), 0px 0px 8px #000;
+}
+
+.parents {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    color: var(--gold-light);
+    margin-bottom: 25px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9), 0px 0px 8px #000;
+}
+
+.intro {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 4vw, 1.4rem);
+    font-style: italic;
+    color: var(--gold-light);
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+    text-shadow: 0 4px 10px rgba(0, 0, 0, 0.9), 0px 0px 8px #000;
+}
+
+.names {
+    font-family: var(--font-script);
+    font-size: clamp(4.5rem, 16vw, 7.5rem);
+    color: var(--gold-light);
+    line-height: 1.2;
+    padding: 10px 0; /* Previene el corte de las astas largas (swashes) de la fuente */
+    text-shadow: 2px 4px 15px rgba(0, 0, 0, 0.6);
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--gold);
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+.arrow-down {
+    width: 15px;
+    height: 15px;
+    border-right: 2px solid var(--gold);
+    border-bottom: 2px solid var(--gold);
+    transform: rotate(45deg);
+    margin-top: 10px;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-15px); }
+    60% { transform: translateY(-7px); }
+}
+
+/* ==================
+   REUSABLE SECTIONS Y DECORACIÓN SVG
+   ================== */
+.section-divider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px 0; /* Más espacio para imágenes más grandes */
+}
+
+.decor-img {
+    width: 120px; /* Tamaño mucho más grande como pediste */
+    height: auto;
+    max-height: 120px;
+    object-fit: contain;
+    opacity: 0.9;
+    /* La sombra paralela nativa de CSS calca la forma del PNG sin fondo */
+    filter: drop-shadow(0 5px 15px rgba(212, 175, 55, 0.3)); 
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.section-divider:hover .decor-img {
+    transform: scale(1.1) translateY(-5px);
+}
+
+/* ===============================
+   LÍNEA ELEGANTE (SEPARADOR MINIMALISTA CSS)
+   =============================== */
+.elegant-line {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 60px auto; /* Mantiene un respiro vertical saludable */
+    width: 60%;
+    max-width: 300px;
+    opacity: 0.7;
+}
+
+.elegant-line::before,
+.elegant-line::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+}
+
+.elegant-line::before {
+    margin-right: 15px;
+    background: linear-gradient(to right, transparent, var(--gold));
+}
+
+.elegant-line::after {
+    margin-left: 15px;
+    background: linear-gradient(to left, transparent, var(--gold));
+}
+
+.elegant-line span {
+    width: 8px;
+    height: 8px;
+    background-color: var(--gold);
+    transform: rotate(45deg);
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+}
+
+.section-date, .section-location, .section-reception {
+    min-height: 70svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.section-reception {
+    padding-bottom: 25vh; /* Da espacio para que las flores de piso no tapen el texto */
+}
+
+/* Titles */
+.section-title {
+    font-family: var(--font-sans);
+    letter-spacing: 6px;
+    color: #4a000f; 
+    background: var(--gold-light);
+    padding: 8px 25px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+}
+
+/* DATE MODULE */
+.date-text {
+    font-family: var(--font-serif);
+    font-size: clamp(1.2rem, 4.5vw, 1.8rem);
+    color: var(--text-light);
+    margin-bottom: 25px;
+    text-shadow: 0 5px 25px rgba(212, 175, 55, 0.3);
+}
+
+.date-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.date-container h2 {
+    font-family: var(--font-sans);
+    color: var(--gold);
+    font-size: 1.1rem;
+    letter-spacing: 5px;
+    font-weight: 300;
+}
+
+.line {
+    height: 1px;
+    width: 40px;
+    background-color: var(--gold);
+    opacity: 0.5;
+}
+
+.huge-date {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
+    color: var(--text-light);
+    letter-spacing: 3px;
+    text-shadow: 0 5px 25px rgba(212, 175, 55, 0.3);
+}
+
+/* LOCATION MODULE */
+.location-card {
+    background: rgba(15, 15, 15, 0.8);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 12px;
+    padding: 50px 30px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+}
+
+.location-name {
+    font-size: clamp(1.3rem, 5vw, 1.6rem);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+}
+
+.time {
+    font-size: clamp(2.2rem, 9vw, 3.5rem);
+    font-weight: 300;
+    margin: 20px 0;
+    font-family: var(--font-serif);
+    color: var(--text-light);
+}
+
+.city {
+    font-weight: 300;
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    margin-top: 25px;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #690016;
+    background: linear-gradient(135deg, #690016 0%, #3a0008 100%);
+    color: var(--text-light);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    padding: 12px 30px;
+    border: 1px solid var(--gold);
+    border-radius: 30px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(212, 175, 55, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.6), inset 0 0 15px rgba(212, 175, 55, 0.5);
+}
+
+/* ===============================
+   CONTADOR CSS (COUNTDOWN)
+   =============================== */
+.countdown-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 40px;
+    width: 100%;
+    flex-wrap: wrap; /* por si las pantallas son micro-teléfonos */
+}
+
+.time-box {
+    background: rgba(15, 15, 15, 0.7);
+    border: 1px solid rgba(212, 175, 55, 0.25);
+    border-radius: 8px;
+    width: clamp(65px, 15vw, 80px);
+    height: clamp(75px, 18vw, 90px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    backdrop-filter: blur(5px);
+}
+
+.time-number {
+    font-family: var(--font-serif);
+    font-size: clamp(1.8rem, 5vw, 2.2rem);
+    color: var(--gold-light);
+    line-height: 1;
+}
+
+.time-label {
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 5px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ===============================
+   MAPA CONTENEDOR (GOOGLE MAPS)
+   =============================== */
+.map-container {
+    margin-top: 40px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(212, 175, 55, 0.2);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 250px;
+    display: block; /* mata bordes vacíos indeseados debajo de iframes inline */
+    border: 0;
+}
+
+/* RECEPTION MODULE */
+.reception-box {
+    max-width: 450px;
+    margin-bottom: 50px;
+}
+
+.reception-box p {
+    font-family: var(--font-serif);
+    font-size: clamp(1.3rem, 5vw, 1.5rem);
+    line-height: 1.8;
+    color: var(--text-dim);
+    font-style: italic;
+}
+
+.footer-text {
+    margin-top: 60px;
+    font-family: var(--font-script);
+    font-size: clamp(3rem, 10vw, 4rem);
+    color: var(--gold);
+    text-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+}
+
+/* WREATH CSS */
+.gold-wreath-wrapper {
+    margin-top: 10px;
+}
+
+.gold-wreath {
+    width: 120px;
+    height: 120px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1), inset 0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+.gold-wreath::before, .gold-wreath::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.gold-wreath::before {
+    width: 100px;
+    height: 100px;
+    border: 1px dashed var(--gold);
+    opacity: 0.6;
+    animation: rotate 20s linear infinite;
+}
+
+.gold-wreath::after {
+    width: 14px;
+    height: 14px;
+    background: var(--gold);
+    box-shadow: 0 0 10px var(--gold);
+}
+
+@keyframes rotate {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.heartbeat-anim {
+    animation: pulse 3s infinite ease-in-out;
+}
+
+/* --- ANIMACIÓN DEL SOBRE PREMIUM --- */
+
+.envelope-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-color);
+    background-image: var(--bg-gradient);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-in-out, transform 0.8s ease-in-out;
+}
+
+.envelope-wrapper.fade-out {
+    opacity: 0;
+    transform: translateY(-80px) scale(0.95);
+    pointer-events: none;
+}
+
+.envelope-pestaña-text {
+    font-family: var(--font-serif);
+    color: var(--gold);
+    margin-bottom: 50px;
+    font-size: 1.4rem;
+    letter-spacing: 3px;
+    animation: pulse 2s infinite;
+    text-transform: uppercase;
+}
+
+.envelope {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    cursor: pointer;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+}
+
+.envelope:hover {
+    transform: translateY(-10px) scale(1.03);
+}
+
+.env-back {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #a6811e 0%, #d4af37 50%, #87620a 100%);
+    border-radius: 8px;
+}
+
+.env-interior {
+    position: absolute;
+    inset: 5px;
+    background: #4a000f;
+    background-image: radial-gradient(circle at center, #5e0210 0%, #200003 100%);
+    border-radius: 6px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.env-paper {
+    width: 90%;
+    height: 90%;
+    background: linear-gradient(to bottom, #ffffff, #fdf8e7);
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #d4af37;
+    border-bottom: none;
+}
+
+.env-paper h3 {
+    font-family: var(--font-script);
+    font-size: 3.5rem;
+    color: #4a000f;
+    margin: 0;
+    line-height: 1;
+}
+.env-paper p {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: #d4af37;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+/* Solapas con clip-path (Matemática pura en CSS) */
+.env-flap-left {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, #b48e23, #e6c867);
+    clip-path: polygon(0 0, 48% 50%, 0 100%);
+    z-index: 3;
+    filter: drop-shadow(2px 0 5px rgba(0,0,0,0.4));
+}
+
+.env-flap-right {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to left, #b48e23, #e6c867);
+    clip-path: polygon(100% 0, 52% 50%, 100% 100%);
+    z-index: 3;
+    filter: drop-shadow(-2px 0 5px rgba(0,0,0,0.4));
+}
+
+.env-flap-bottom {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, #b48e23, #f5d878);
+    clip-path: polygon(0 100%, 50% 55%, 100% 100%);
+    z-index: 4;
+    filter: drop-shadow(0 -5px 8px rgba(0,0,0,0.5));
+}
+
+.env-flap-top {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, #fde48e, #cba42a);
+    clip-path: polygon(0 0, 100% 0, 50% 60%);
+    transform-origin: top;
+    transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), z-index 0s 0.3s;
+    z-index: 5;
+    filter: drop-shadow(0 5px 8px rgba(0,0,0,0.6));
+}
+
+.env-flap-top.open {
+    transform: rotateX(180deg);
+    z-index: 0;
+}
+
+.envelope-seal {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 65px;
+    height: 65px;
+    background: radial-gradient(circle at top left, #690016, #3a0008);
+    color: var(--gold-light);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    border: 2px solid #d4af37;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.5);
+    z-index: 6;
+    transition: opacity 0.3s, transform 0.5s;
+    text-transform: uppercase;
+}
+
+.envelope-seal::after {
+    content: '';
+    position: absolute;
+    width: 53px;
+    height: 53px;
+    border: 1px dashed rgba(212, 175, 55, 0.5);
+    border-radius: 50%;
+}
